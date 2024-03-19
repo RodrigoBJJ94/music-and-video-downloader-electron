@@ -1,0 +1,14 @@
+.headerTop {
+  display: flex;
+  align-items: center;
+  width: 100vw;
+  height: 3.9vh;
+  padding-left: 0.5vw;
+  background-color: #093F6C;
+}
+
+.headerTitle {
+  font-size: 12px;
+  font-weight: 500;
+  color: #FFFFFF;
+}

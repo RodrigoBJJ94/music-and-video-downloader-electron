@@ -1,0 +1,22 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  outline: none;
+  list-style-type: none;
+  font-family: "Roboto", sans-serif;
+}
+
+.app {
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.body {
+  width: 100vw;
+  height: 88.6vh;
+  background-color: #E4E7E9;
+}

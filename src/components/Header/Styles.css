@@ -1,0 +1,4 @@
+.headerMain {
+  width: 100vw;
+  -webkit-app-region: drag;
+}

@@ -1,5 +1,7 @@
 import React from "react";
 import { useContextAPI } from "./context/ContextAPI";
+import Header from "./components/Header/Header";
+import "./Styles.css";
 
 export default function Main() {
 
@@ -8,6 +10,9 @@ export default function Main() {
   console.log(test);
 
   return (
-    <div>Music and Video Downloader</div>
+    <div className="app">
+      <Header />
+      <div className="body"></div>
+    </div>
   );
 };
