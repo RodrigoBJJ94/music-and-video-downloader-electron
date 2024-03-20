@@ -3,10 +3,10 @@ import { createContext, useContext, useState } from "react";
 export const Context = createContext();
 
 export const ContextProvider = ({ children }) => {
-  const [test, setTest] = useState(0);
+  const [inputURLYoutube, setInputURLYoutube] = useState("");
 
   const values = {
-    test, setTest
+    inputURLYoutube, setInputURLYoutube
   };
 
   return (

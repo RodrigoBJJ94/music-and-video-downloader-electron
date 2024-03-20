@@ -5,14 +5,32 @@ import "./Styles.css";
 
 export default function Main() {
 
-  const { test } = useContextAPI();
+  const { setInputURLYoutube, inputURLYoutube } = useContextAPI();
 
-  console.log(test);
+  console.log(inputURLYoutube);
+
+  const sendURLYoutube = () => {
+    window.api?.getURLYoutube(inputURLYoutube);
+  };
 
   return (
     <div className="app">
       <Header />
-      <div className="body"></div>
+      <div className="body">
+        <input
+          value={inputURLYoutube}
+          onChange={element => setInputURLYoutube(element.target.value)}
+          style={{
+            width: "25vw", height: "5vh", marginTop: "2vh", marginLeft: "1vw", marginRight: "1vw"
+          }}
+        />
+        <button
+          onClick={() => {
+            sendURLYoutube();
+          }}>
+          Download
+        </button>
+      </div>
     </div>
   );
 };

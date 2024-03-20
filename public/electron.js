@@ -1,6 +1,9 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron");
 const isDev = require("electron-is-dev");
 const path = require("path");
+const fs = require("fs");
+const os = require("os");
+const ytdl = require("ytdl-core");
 
 let mainWindow;
 
@@ -65,5 +68,28 @@ process.on("uncaughtException", (error) => {
   console.log(`Exemption ${error}`);
   if (process.platform !== "darwin") {
     app.quit();
+  };
+});
+
+ipcMain.on("URLYoutube", async (event, message) => {
+  try {
+    ytdl.getInfo(message).then((data) => {
+      const format = ytdl.chooseFormat(data.formats, { quality: "18" });
+      const outputFilePath = `${data.videoDetails.title}.mp4`;
+      const outputFilePathConverted = outputFilePath.replace(/\?/g, "");
+      const appPath = path.join(os.homedir(), "Downloads");
+      const fileName = path.join(appPath, outputFilePathConverted);
+      const outputStream = fs.createWriteStream(fileName);
+
+      ytdl.downloadFromInfo(data, { format: format }).pipe(outputStream);
+
+      outputStream.on("finish", () => {
+        console.log(`Finished downloading: ${outputFilePath}`);
+      });
+    }).catch((err) => {
+      console.error(err);
+    });
+  } catch (error) {
+    console.log(error);
   };
 });
