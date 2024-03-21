@@ -13,6 +13,10 @@ export default function Main() {
     window.api?.getURLYoutube(inputURLYoutube);
   };
 
+  const sendURLMusicYoutube = () => {
+    window.api?.getURLMusicYoutube(inputURLYoutube);
+  };
+
   return (
     <div className="app">
       <Header />
@@ -28,7 +32,13 @@ export default function Main() {
           onClick={() => {
             sendURLYoutube();
           }}>
-          Download
+          Download Youtube Video
+        </button>
+        <button
+          onClick={() => {
+            sendURLMusicYoutube();
+          }}>
+          Download Youtube Music
         </button>
       </div>
     </div>

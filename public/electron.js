@@ -4,6 +4,9 @@ const path = require("path");
 const fs = require("fs");
 const os = require("os");
 const ytdl = require("ytdl-core");
+const ffmpegInstaller = require("@ffmpeg-installer/ffmpeg");
+const ffmpeg = require("fluent-ffmpeg");
+ffmpeg.setFfmpegPath(ffmpegInstaller.path);
 
 let mainWindow;
 
@@ -86,10 +89,48 @@ ipcMain.on("URLYoutube", async (event, message) => {
       outputStream.on("finish", () => {
         console.log(`Finished downloading: ${outputFilePath}`);
       });
-    }).catch((err) => {
-      console.error(err);
+    }).catch((errpr) => {
+      console.error(error);
     });
   } catch (error) {
     console.log(error);
   };
+});
+
+ipcMain.on("URLMusicYoutube", async (event, message) => {
+  try {
+    ytdl.getInfo(message).then((data) => {
+      const format = ytdl.chooseFormat(data.formats, {
+        quality: "highestaudio",
+        filter: "audioonly",
+        format: "m4a"
+      });
+
+      const outputFilePath = `${data.videoDetails.title}`;
+      const outputFilePathConverted = outputFilePath.replace(/\?/g, "");
+      const appPath = path.join(os.homedir(), "Downloads");
+      const fileName = path.join(appPath, outputFilePathConverted);
+      const audioStream = ytdl.downloadFromInfo(data, { format: format });
+      const outputStream = fs.createWriteStream(fileName);
+
+      audioStream.pipe(outputStream);
+
+      outputStream.on("finish", () => {
+        ffmpeg(fileName)
+          .toFormat("mp3")
+          .on("error", (error) => {
+            console.error("Error converting:", error);
+          })
+          .on("end", () => {
+            fs.unlinkSync(fileName);
+            console.log(`Finished downloading and converting: ${outputFilePath}`);
+          })
+          .save(`${fileName}.mp3`);
+      });
+    }).catch((error) => {
+      console.error(error);
+    });
+  } catch (error) {
+    console.log(error);
+  }
 });
