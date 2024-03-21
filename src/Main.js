@@ -1,13 +1,12 @@
 import React from "react";
 import { useContextAPI } from "./context/ContextAPI";
 import Header from "./components/Header/Header";
+import Swal from "sweetalert2";
 import "./Styles.css";
 
 export default function Main() {
 
   const { setInputURLYoutube, inputURLYoutube } = useContextAPI();
-
-  console.log(inputURLYoutube);
 
   const sendURLYoutube = () => {
     window.api?.getURLYoutube(inputURLYoutube);
@@ -16,6 +15,22 @@ export default function Main() {
   const sendURLMusicYoutube = () => {
     window.api?.getURLMusicYoutube(inputURLYoutube);
   };
+
+  window.api?.getURLYoutubeResponse(data => {
+    Swal.fire({
+      icon: "warning",
+      iconColor: "#E86969",
+      text: data
+    });
+  });
+
+  window.api?.getURLMusicYoutubeResponse(data => {
+    Swal.fire({
+      icon: "warning",
+      iconColor: "#E86969",
+      text: data
+    });
+  });
 
   return (
     <div className="app">

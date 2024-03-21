@@ -77,6 +77,8 @@ process.on("uncaughtException", (error) => {
 ipcMain.on("URLYoutube", async (event, message) => {
   try {
     ytdl.getInfo(message).then((data) => {
+      event.sender.send("URLYoutubeResponse", "Downloading...");
+
       const format = ytdl.chooseFormat(data.formats, { quality: "18" });
       const outputFilePath = `${data.videoDetails.title}.mp4`;
       const outputFilePathConverted = outputFilePath.replace(/\?/g, "");
@@ -88,9 +90,11 @@ ipcMain.on("URLYoutube", async (event, message) => {
 
       outputStream.on("finish", () => {
         console.log(`Finished downloading: ${outputFilePath}`);
+        event.sender.send("URLYoutubeResponse", "Download finished");
       });
     }).catch((error) => {
       console.error(error);
+      event.sender.send("URLYoutubeResponse", "This YouTube link is incorrect");
     });
   } catch (error) {
     console.log(error);
@@ -100,6 +104,8 @@ ipcMain.on("URLYoutube", async (event, message) => {
 ipcMain.on("URLMusicYoutube", async (event, message) => {
   try {
     ytdl.getInfo(message).then((data) => {
+      event.sender.send("URLMusicYoutubeResponse", "Downloading...");
+
       const format = ytdl.chooseFormat(data.formats, {
         quality: "highestaudio",
         filter: "audioonly",
@@ -124,13 +130,15 @@ ipcMain.on("URLMusicYoutube", async (event, message) => {
           .on("end", () => {
             fs.unlinkSync(fileName);
             console.log(`Finished downloading and converting: ${outputFilePath}`);
+            event.sender.send("URLMusicYoutubeResponse", "Download finished");
           })
           .save(`${fileName}.mp3`);
       });
     }).catch((error) => {
       console.error(error);
+      event.sender.send("URLMusicYoutubeResponse", "This YouTube link is incorrect");
     });
   } catch (error) {
     console.log(error);
-  }
+  };
 });
