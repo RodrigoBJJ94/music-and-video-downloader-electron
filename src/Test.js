@@ -1,97 +1,29 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
-const isDev = require("electron-is-dev");
-const path = require("path");
-const fs = require("fs");
-const os = require("os");
-const ytdl = require("ytdl-core");
+I using Electron, React and the libraries: "@ffmpeg-installer/ffmpeg", fluent-ffmpeg,
+and I have this codes that is working very well:
+
 const ffmpegInstaller = require("@ffmpeg-installer/ffmpeg");
 const ffmpeg = require("fluent-ffmpeg");
 ffmpeg.setFfmpegPath(ffmpegInstaller.path);
-
-let mainWindow;
-
-const createWindow = () => {
-  mainWindow = new BrowserWindow({
-    show: false,
-    autoHideMenuBar: true,
-    titleBarStyle: "hidden",
-    titleBarOverlay: {
-      color: "#093F6C",
-      symbolColor: "#FFFFFF",
-      height: 28
-    },
-    minWidth: 1280,
-    minHeight: 720,
-    webPreferences: {
-      nodeIntegration: false,
-      contextIsolation: true,
-      preload: isDev
-        ? path.join(app.getAppPath(), "./public/preload.js")
-        : path.join(app.getAppPath(), "./build/preload.js")
-    },
-  });
-
-  mainWindow.maximize();
-  mainWindow.show();
-
-  mainWindow.loadURL(
-    isDev
-      ? "http://localhost:3000"
-      : `file://${path.join(__dirname, "../build/index.html")}`
-  );
-
-  if (isDev) {
-    mainWindow.webContents.on("did-frame-finish-load", () => {
-      mainWindow.webContents.openDevTools({
-        mode: "detach"
-      })
-    });
-  };
-};
-
-app.setPath(
-  "userData",
-  isDev
-    ? path.join(app.getAppPath(), "userData/")
-    : path.join(process.resourcesPath, "userData/")
-);
-
-app.whenReady()
-  .then(async () => {
-    await createWindow();
-  });
-
-app.on("activate", () => {
-  if (mainWindow.getAllWindows().length === 0) {
-    createWindow();
-  };
-});
-
-process.on("uncaughtException", (error) => {
-  console.log(`Exemption ${error}`);
-  if (process.platform !== "darwin") {
-    app.quit();
-  };
-});
 
 ipcMain.on("URLYoutube", async (event, message) => {
   try {
     ytdl.getInfo(message).then((data) => {
       event.sender.send("URLYoutubeResponse", "Downloading...");
 
-      const format = ytdl.chooseFormat(data.formats, { quality: "highestvideo" });
-      const outputFilePath = `${data.videoDetails.title}`;
+      // Choose the format with 1080p video
+      const format = ytdl.chooseFormat(data.formats, { quality: "137" });
+      const outputFilePath = `${data.videoDetails.title}.mp4`;
       const outputFilePathConverted = outputFilePath.replace(/\?/g, "");
       const appPath = path.join(os.homedir(), "Downloads");
       const videoFileName = path.join(appPath, outputFilePathConverted + "_video.mp4");
       const audioFileName = path.join(appPath, outputFilePathConverted + "_audio.m4a");
+      console.log("Video file path:", videoFileName); // Add this line for debugging
+      console.log("Audio file path:", audioFileName); // Add this line for debugging
 
+
+      // Download video and audio separately
       const videoStream = ytdl.downloadFromInfo(data, { format: format });
-      const audioStream = ytdl.downloadFromInfo(data, {
-        quality: "highestaudio",
-        filter: "audioonly",
-        format: "m4a"
-      });
+      const audioStream = ytdl.downloadFromInfo(data, { quality: "highestaudio", filter: "audioonly", format: "m4a" });
 
       const videoOutput = fs.createWriteStream(videoFileName);
       const audioOutput = fs.createWriteStream(audioFileName);
@@ -99,6 +31,7 @@ ipcMain.on("URLYoutube", async (event, message) => {
       videoStream.pipe(videoOutput);
       audioStream.pipe(audioOutput);
 
+      // Wait for both video and audio to finish downloading
       let videoFinished = false;
       let audioFinished = false;
 
@@ -110,9 +43,10 @@ ipcMain.on("URLYoutube", async (event, message) => {
             .input(audioFileName)
             .outputOptions("-c:v copy")
             .audioCodec("aac")
-            .save(path.join(appPath, `${outputFilePathConverted}.mp4`))
+            .save(`${outputFilePathConverted}.mp4`)
             .on("error", (error) => {
               console.error("Error merging audio and video:", error);
+              event.sender.send("URLYoutubeResponse", "Error merging audio and video");
             })
             .on("end", () => {
               fs.unlinkSync(videoFileName);
@@ -120,7 +54,7 @@ ipcMain.on("URLYoutube", async (event, message) => {
               console.log(`Finished downloading and merging: ${outputFilePathConverted}`);
               event.sender.send("URLYoutubeResponse", "Download finished");
             });
-        };
+        }
       });
 
       audioOutput.on("finish", () => {
@@ -131,9 +65,10 @@ ipcMain.on("URLYoutube", async (event, message) => {
             .input(audioFileName)
             .outputOptions("-c:v copy")
             .audioCodec("aac")
-            .save(path.join(appPath, `${outputFilePathConverted}.mp4`))
+            .save(`${outputFilePathConverted}.mp4`)
             .on("error", (error) => {
               console.error("Error merging audio and video:", error);
+              event.sender.send("URLYoutubeResponse", "Error merging audio and video");
             })
             .on("end", () => {
               fs.unlinkSync(videoFileName);
@@ -141,7 +76,7 @@ ipcMain.on("URLYoutube", async (event, message) => {
               console.log(`Finished downloading and merging: ${outputFilePathConverted}`);
               event.sender.send("URLYoutubeResponse", "Download finished");
             });
-        };
+        }
       });
     }).catch((error) => {
       console.error(error);
@@ -151,6 +86,50 @@ ipcMain.on("URLYoutube", async (event, message) => {
     console.log(error);
   };
 });
+
+The code is workings, the only problem isn't saving in the Dowloads folder, it's saving in the application folder
+
+
+This is my logs:
+
+[1] App Path: C:\Users\rodrigo.brentano\Downloads
+[1] Video File Path: C:\Users\rodrigo.brentano\Downloads\Audioslave - Be Yourself (Album Version, Closed Captioned).mp4_video.mp4
+[1] Audio File Path: C:\Users\rodrigo.brentano\Downloads\Audioslave - Be Yourself (Album Version, Closed Captioned).mp4_audio.m4a
+[1] Finished downloading and merging: Audioslave - Be Yourself (Album Version, Closed Captioned).mp4
+
+Have not errors, the path is right in the logs, but the video isn't saving in the Dowloads folder, is saving in the application folder
+
+
+// This code donwload videos with 360p
+
+ipcMain.on("URLYoutube", async (event, message) => {
+  try {
+    ytdl.getInfo(message).then((data) => {
+      event.sender.send("URLYoutubeResponse", "Downloading...");
+
+      const format = ytdl.chooseFormat(data.formats, { quality: "18" });
+      const outputFilePath = `${data.videoDetails.title}.mp4`;
+      const outputFilePathConverted = outputFilePath.replace(/\?/g, "");
+      const appPath = path.join(os.homedir(), "Downloads");
+      const fileName = path.join(appPath, outputFilePathConverted);
+      const outputStream = fs.createWriteStream(fileName);
+
+      ytdl.downloadFromInfo(data, { format: format }).pipe(outputStream);
+
+      outputStream.on("finish", () => {
+        console.log(`Finished downloading: ${outputFilePath}`);
+        event.sender.send("URLYoutubeResponse", "Download finished");
+      });
+    }).catch((error) => {
+      console.error(error);
+      event.sender.send("URLYoutubeResponse", "This YouTube link is incorrect");
+    });
+  } catch (error) {
+    console.log(error);
+  };
+});
+
+// This code donwload musics in the mp3 format
 
 ipcMain.on("URLMusicYoutube", async (event, message) => {
   try {
@@ -193,3 +172,12 @@ ipcMain.on("URLMusicYoutube", async (event, message) => {
     console.log(error);
   };
 });
+
+And now I need a code to download videos with 1080p, but in in videos with 1080p the audio isn't together, so I need a code to merge the video and the audio
+
+
+Video file path: C:\Users\rodrigo.brentano\Downloads\Audioslave - Be Yourself (Album Version, Closed Captioned)_video.mp4
+
+Audio file path: C:\Users\rodrigo.brentano\Downloads\Audioslave - Be Yourself (Album Version, Closed Captioned)_audio.m4a
+
+I get this logs, but isn't saving in my Downloads folder, it's saving in the folder of the application
