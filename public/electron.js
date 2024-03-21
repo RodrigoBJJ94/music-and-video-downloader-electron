@@ -89,7 +89,7 @@ ipcMain.on("URLYoutube", async (event, message) => {
       outputStream.on("finish", () => {
         console.log(`Finished downloading: ${outputFilePath}`);
       });
-    }).catch((errpr) => {
+    }).catch((error) => {
       console.error(error);
     });
   } catch (error) {
