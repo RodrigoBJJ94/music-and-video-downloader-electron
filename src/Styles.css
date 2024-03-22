@@ -27,6 +27,23 @@
   margin-left: 1vw;
 }
 
+.youTubeTitleContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 12vh;
+}
+
+.youTubeIcon {
+  width: 4vw;
+  margin-right: 0.5vw;
+}
+
+.title {
+  font-size: 17px;
+  color: #333333;
+}
+
 .input {
   width: 46.8vw;
   height: 6vh;
@@ -40,22 +57,10 @@
   color: #333333;
 }
 
-.youTubeTitleContainer {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  height: 12vh;
-}
-
 .youTubeButtonsContainer {
   display: flex;
   flex-direction: row;
   margin-top: 3vh;
-}
-
-.youTubeIcon {
-  width: 4vw;
-  margin-right: 0.5vw;
 }
 
 .buttons {
@@ -107,7 +112,7 @@
   border-radius: 4px !important;
   background-color: #13538A !important;
   color: #FFFFFF !important;
-  font-size: 13px !important;
+  font-size: 12.5px !important;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15) !important;
 }
 
@@ -121,4 +126,60 @@
   background-image: none !important;
   background-color: #093F6C !important;
   color: #FFFFFF !important;
+}
+
+@media (max-width: 1400px) {
+  .youTubeIcon {
+    width: 4.1vw;
+  }
+
+  .title {
+    font-size: 16.5px;
+  }
+
+  .input {
+    font-size: 15px;
+  }
+
+  .buttons {
+    font-size: 12px;
+  }
+
+  .swal2-html-container {
+    font-size: 16px !important;
+  }
+
+  .swal2-styled.swal2-confirm {
+    font-size: 12px !important;
+  }
+}
+
+@media (max-width: 1280px) {
+  .youTubeIcon {
+    width: 4.2vw;
+  }
+
+  .title {
+    font-size: 16px;
+  }
+
+  .input {
+    font-size: 14px;
+  }
+
+  .buttons {
+    font-size: 11.5px;
+  }
+
+  .swal2-popup {
+    width: 25vw !important;
+  }
+
+  .swal2-html-container {
+    font-size: 15.5px !important;
+  }
+
+  .swal2-styled.swal2-confirm {
+    font-size: 11.5px !important;
+  }
 }

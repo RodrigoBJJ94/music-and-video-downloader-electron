@@ -71,7 +71,7 @@ export default function Home() {
               className="youTubeIcon"
               alt="YouTube Icon"
             />
-            <p>
+            <p className="title">
               YouTube
             </p>
           </div>
