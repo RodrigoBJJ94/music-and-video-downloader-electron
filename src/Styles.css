@@ -20,3 +20,105 @@
   height: 88.6vh;
   background-color: #E4E7E9;
 }
+
+.youTubeContainer {
+  display: flex;
+  flex-direction: column;
+  margin-left: 1vw;
+}
+
+.input {
+  width: 46.8vw;
+  height: 6vh;
+  padding-left: 0.6vw;
+  padding-right: 0.6vw;
+  border: 1px solid #C4C4C4;
+  border-radius: 4px;
+  background-color: #FFFFFF;
+  font-size: 15px;
+  font-weight: 400;
+  color: #333333;
+}
+
+.youTubeTitleContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 12vh;
+}
+
+.youTubeButtonsContainer {
+  display: flex;
+  flex-direction: row;
+  margin-top: 3vh;
+}
+
+.youTubeIcon {
+  width: 4vw;
+  margin-right: 0.5vw;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 6vh;
+  width: 10vw;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 500;
+  background-color: #13538A;
+  color: #FFFFFF;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.buttons:hover {
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15),
+    inset 0 0 0 1px #093F6C;
+}
+
+.buttons:active {
+  background-color: #093F6C;
+}
+
+.swal2-container.swal2-backdrop-show {
+  background: rgba(0, 0, 0, 0.6) !important;
+}
+
+.swal2-popup {
+  width: 24vw !important;
+  border-radius: 16px !important;
+}
+
+.swal2-html-container {
+  margin-top: 3vh !important;
+  color: #323D4D !important;
+  font-size: 16.5px !important;
+  font-weight: 400 !important;
+}
+
+.swal2-styled.swal2-confirm {
+  height: 6vh !important;
+  margin-top: 1vh !important;
+  padding-left: 1.5vw !important;
+  padding-right: 1.5vw !important;
+  border-radius: 4px !important;
+  background-color: #13538A !important;
+  color: #FFFFFF !important;
+  font-size: 13px !important;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15) !important;
+}
+
+.swal2-actions:not(.swal2-loading) .swal2-styled:hover {
+  background-image: none !important;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15),
+    inset 0 0 0 1px #093F6C !important;
+}
+
+.swal2-actions:not(.swal2-loading) .swal2-styled:active {
+  background-image: none !important;
+  background-color: #093F6C !important;
+  color: #FFFFFF !important;
+}
