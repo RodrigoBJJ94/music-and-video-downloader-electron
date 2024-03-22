@@ -5,14 +5,3 @@
   height: 8.1vh;
   background-color: #13538A;
 }
-
-.logoIconContainer {
-  display: flex;
-  align-items: center;
-  height: 8.1vh;
-}
-
-.logoIcon {
-  width: 3.5vw;
-  margin-left: 1vw;
-}
