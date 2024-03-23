@@ -11,4 +11,9 @@ contextBridge.exposeInMainWorld("api", {
     (event, data) => {
       callback(data)
     }),
+  getURLTikTok: (args) => ipcRenderer.send("URLTikTok", args),
+  getURLTikTokResponse: (callback) => ipcRenderer.on("URLTikTokResponse",
+    (event, data) => {
+      callback(data)
+    })
 });

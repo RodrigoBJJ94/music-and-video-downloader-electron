@@ -3,7 +3,9 @@ const isDev = require("electron-is-dev");
 const path = require("path");
 const fs = require("fs");
 const os = require("os");
+const https = require("https");
 const ytdl = require("ytdl-core");
+const { TiktokDownloader } = require("@tobyg74/tiktok-api-dl")
 const ffmpegInstaller = require("@ffmpeg-installer/ffmpeg");
 const ffmpeg = require("fluent-ffmpeg");
 ffmpeg.setFfmpegPath(ffmpegInstaller.path);
@@ -193,3 +195,37 @@ ipcMain.on("URLMusicYoutube", async (event, message) => {
     console.log(error);
   };
 });
+
+ipcMain.on("URLTikTok", async (event, message) => {
+  try {
+    event.sender.send("URLTikTokResponse", "Downloading...");
+
+    TiktokDownloader(message, {
+      version: "v3"
+    }).then((data) => {
+      const url = data.result.video_hd;
+      const nickname = data.result.author.nickname;
+      const appPath = path.join(os.homedir(), "Downloads");
+      const dateNow = new Date(Date.now());
+      const dateID = dateNow.getTime();
+      const fileName = path.join(appPath, `${nickname}_${dateID}.mp4`);
+      const fileStream = fs.createWriteStream(fileName);
+
+      fileStream.on("finish", () => {
+        console.log("Download finished");
+        event.sender.send("URLTikTokResponse", "Download finished");
+      });
+
+      try {
+        https.get(url, res => res.pipe(fileStream));
+      } catch (error) {
+        console.log(error);
+      };
+    }).catch((error) => {
+      console.error(error);
+      event.sender.send("URLTikTokResponse", "This TikTok link is incorrect");
+    });
+  } catch (error) {
+    console.log(error);
+  };
+})
