@@ -5,10 +5,11 @@ const fs = require("fs");
 const os = require("os");
 const https = require("https");
 const ytdl = require("ytdl-core");
-const { TiktokDownloader } = require("@tobyg74/tiktok-api-dl")
-const ffmpegInstaller = require("@ffmpeg-installer/ffmpeg");
+const { TiktokDownloader } = require("@tobyg74/tiktok-api-dl");
+const ffmpegPath = require("@ffmpeg-installer/ffmpeg")
+  .path.replace("app.asar", "app.asar.unpacked");
 const ffmpeg = require("fluent-ffmpeg");
-ffmpeg.setFfmpegPath(ffmpegInstaller.path);
+ffmpeg.setFfmpegPath(ffmpegPath);
 
 let mainWindow;
 
@@ -115,6 +116,7 @@ ipcMain.on("URLYoutube", async (event, message) => {
             .save(path.join(appPath, `${outputFilePathConverted}.mp4`))
             .on("error", (error) => {
               console.error("Error merging audio and video:", error);
+              event.sender.send("URLYoutubeResponse", error);
             })
             .on("end", () => {
               fs.unlinkSync(videoFileName);
@@ -136,6 +138,7 @@ ipcMain.on("URLYoutube", async (event, message) => {
             .save(path.join(appPath, `${outputFilePathConverted}.mp4`))
             .on("error", (error) => {
               console.error("Error merging audio and video:", error);
+              event.sender.send("URLYoutubeResponse", error);
             })
             .on("end", () => {
               fs.unlinkSync(videoFileName);
@@ -179,6 +182,7 @@ ipcMain.on("URLMusicYoutube", async (event, message) => {
           .toFormat("mp3")
           .on("error", (error) => {
             console.error("Error converting:", error);
+            event.sender.send("URLMusicYoutubeResponse", error);
           })
           .on("end", () => {
             fs.unlinkSync(fileName);

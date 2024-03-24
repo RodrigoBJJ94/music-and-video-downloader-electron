@@ -30,6 +30,12 @@ export default function Button() {
         iconColor: "#10B597",
         text: data
       });
+    } else {
+      Swal.fire({
+        icon: "error",
+        iconColor: "#E86969",
+        text: data
+      });
     };
   });
 
