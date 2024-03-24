@@ -66,11 +66,11 @@
       "target": [
         "nsis"
       ],
-      "icon": ""
+      "icon": "./src/icons/App.ico"
     },
     "nsis": {
-      "installerIcon": "",
-      "uninstallerIcon": "",
+      "installerIcon": "./src/icons/App.ico",
+      "uninstallerIcon": "./src/icons/App.ico",
       "uninstallDisplayName": "Music and Video Downloader",
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
