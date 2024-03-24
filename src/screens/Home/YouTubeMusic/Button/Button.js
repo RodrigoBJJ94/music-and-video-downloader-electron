@@ -1,14 +1,14 @@
 import React from "react";
-import { useContextAPI } from "../../../../../context/ContextAPI";
+import { useContextAPI } from "../../../../context/ContextAPI";
 import Swal from "sweetalert2";
-import "../../../../../Styles.css";
+import "../../../../Styles.css";
 
-export default function Music() {
+export default function Button() {
 
-  const { inputURLYoutube } = useContextAPI();
+  const { inputURLYoutubeMusic } = useContextAPI();
 
   const sendURLMusicYoutube = () => {
-    window.api?.getURLMusicYoutube(inputURLYoutube);
+    window.api?.getURLMusicYoutube(inputURLYoutubeMusic);
   };
 
   window.api?.getURLMusicYoutubeResponse(data => {
@@ -34,12 +34,14 @@ export default function Music() {
   });
 
   return (
-    <button
-      onClick={() => {
-        sendURLMusicYoutube();
-      }}
-      className="buttons">
-      Download Music
-    </button>
+    <div className="buttonsContainer">
+      <button
+        onClick={() => {
+          sendURLMusicYoutube();
+        }}
+        className="buttons">
+        Download
+      </button>
+    </div>
   );
 };

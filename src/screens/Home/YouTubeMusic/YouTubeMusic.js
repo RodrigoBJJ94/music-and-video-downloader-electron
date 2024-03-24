@@ -5,7 +5,7 @@ import Input from "./Input/Input";
 import Button from "./Button/Button";
 import "../../../Styles.css";
 
-export default function YouTube() {
+export default function YouTubeMusic() {
   return (
     <div className="bodyContainer">
       <div className="titleContainer">

@@ -228,4 +228,4 @@ ipcMain.on("URLTikTok", async (event, message) => {
   } catch (error) {
     console.log(error);
   };
-})
+});

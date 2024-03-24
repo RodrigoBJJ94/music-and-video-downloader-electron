@@ -1,16 +1,22 @@
 import React from "react";
 import { useContextAPI } from "../../../../context/ContextAPI";
 import Swal from "sweetalert2";
-import Video from "./Video/Video";
-import Music from "./Music/Music";
 import "../../../../Styles.css";
 
-export default function Buttons() {
+export default function Button() {
 
-  const { inputURLYoutube } = useContextAPI();
+  const { inputURLTikTok } = useContextAPI();
 
   const sendURLTikTok = () => {
-    window.api?.getURLTikTok(inputURLYoutube);
+    if (inputURLTikTok !== "") {
+      window.api?.getURLTikTok(inputURLTikTok);
+    } else {
+      Swal.fire({
+        icon: "error",
+        iconColor: "#E86969",
+        text: "This TikTok link is incorrect"
+      });
+    };
   };
 
   window.api?.getURLTikTokResponse(data => {
@@ -37,10 +43,12 @@ export default function Buttons() {
 
   return (
     <div className="buttonsContainer">
-      <Video />
-      <Music />
-      <button onClick={() => sendURLTikTok()}>
-        TitTok Download
+      <button
+        className="buttons"
+        onClick={() => {
+          sendURLTikTok();
+        }}>
+        Download
       </button>
     </div>
   );

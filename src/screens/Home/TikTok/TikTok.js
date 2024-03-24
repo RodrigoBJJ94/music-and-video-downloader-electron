@@ -5,10 +5,12 @@ import Input from "./Input/Input";
 import Button from "./Button/Button";
 import "../../../Styles.css";
 
-export default function YouTube() {
+export default function TikTok() {
   return (
     <div className="bodyContainer">
-      <div className="titleContainer">
+      <div
+        className="titleContainer"
+        style={{ marginTop: "12vh" }}>
         <Icon />
         <Title />
       </div>

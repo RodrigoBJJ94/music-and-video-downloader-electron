@@ -1,9 +1,9 @@
 import React from "react";
-import { useContextAPI } from "../../../../../context/ContextAPI";
+import { useContextAPI } from "../../../../context/ContextAPI";
 import Swal from "sweetalert2";
-import "../../../../../Styles.css";
+import "../../../../Styles.css";
 
-export default function Video() {
+export default function Button() {
 
   const { inputURLYoutube } = useContextAPI();
 
@@ -34,13 +34,15 @@ export default function Video() {
   });
 
   return (
-    <button
-      onClick={() => {
-        sendURLYoutube();
-      }}
-      className="buttons"
-      style={{ marginRight: "1.5vw" }}>
-      Download Video
-    </button>
+    <div className="buttonsContainer">
+      <button
+        onClick={() => {
+          sendURLYoutube();
+        }}
+        className="buttons"
+        style={{ marginRight: "1.5vw" }}>
+        Download
+      </button>
+    </div>
   );
 };

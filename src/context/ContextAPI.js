@@ -4,11 +4,13 @@ export const Context = createContext();
 
 export const ContextProvider = ({ children }) => {
   const [inputURLYoutube, setInputURLYoutube] = useState("");
-  const [inputURLMusicYoutube, setInputURLMusicYoutube] = useState("");
+  const [inputURLYoutubeMusic, setInputURLYoutubeMusic] = useState("");
+  const [inputURLTikTok, setInputURLTikTok] = useState("");
 
   const values = {
     inputURLYoutube, setInputURLYoutube,
-    inputURLMusicYoutube, setInputURLMusicYoutube
+    inputURLYoutubeMusic, setInputURLYoutubeMusic,
+    inputURLTikTok, setInputURLTikTok
   };
 
   return (
