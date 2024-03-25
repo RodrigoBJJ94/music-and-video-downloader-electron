@@ -1,1 +1,3 @@
-# music-and-video-downloader-electron
+# Music and Video Downloader
+
+Desktop application developed with Electron and React, which downloads music and videos from YouTube and videos from TikTok
