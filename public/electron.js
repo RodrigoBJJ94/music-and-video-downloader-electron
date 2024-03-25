@@ -1,4 +1,5 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
+const contextMenu = require("electron-context-menu");
 const isDev = require("electron-is-dev");
 const path = require("path");
 const fs = require("fs");
@@ -10,6 +11,8 @@ const ffmpegPath = require("@ffmpeg-installer/ffmpeg")
   .path.replace("app.asar", "app.asar.unpacked");
 const ffmpeg = require("fluent-ffmpeg");
 ffmpeg.setFfmpegPath(ffmpegPath);
+
+contextMenu({});
 
 let mainWindow;
 
