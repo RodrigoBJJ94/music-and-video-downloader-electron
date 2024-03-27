@@ -16,30 +16,37 @@
 }
 
 .body {
+  display: flex;
+  flex-direction: row;
   width: 100vw;
-  height: 80.5vh;
+  height: 88vh;
   background-color: #E4E7E9;
+  /* background-color: #323d4c; */
+  background-color: #d4dbdf;
 }
 
 .bodyRow {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
 }
 
 .bodyContainer {
   display: flex;
   flex-direction: column;
-  margin-left: 3vw;
-  margin-right: 3vw;
+  width: 47.5vw;
+  height: 23.5vh;
+  margin-top: 1vh;
+  margin-bottom: 1vh;
+  margin-left: 1.25vw;
+  margin-right: 1.25vw;
 }
 
 .titleContainer {
   display: flex;
   flex-direction: row;
   align-items: center;
-  height: 14vh;
-  margin-top: 3vh;
+  height: 8.5vh;
 }
 
 .title {
@@ -48,8 +55,8 @@
 }
 
 .input {
-  width: 40.8vw;
-  height: 6vh;
+  width: 46.3vw;
+  height: 5.5vh;
   padding-left: 0.6vw;
   padding-right: 0.6vw;
   border: 1px solid #C4C4C4;
@@ -63,14 +70,14 @@
 .buttonsContainer {
   display: flex;
   flex-direction: row;
-  margin-top: 4vh;
+  margin-top: 2.5vh;
 }
 
 .buttons {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 6vh;
+  height: 5.5vh;
   width: 7vw;
   border-radius: 4px;
   border: none;
@@ -82,21 +89,6 @@
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
 }
 
-.footer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
-  height: 8.1vh;
-  background-color: #E4E7E9;
-}
-
-.footerTitle {
-  font-size: 15px;
-  font-weight: 500;
-  color: #333333;
-}
-
 .buttons:hover {
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15),
     inset 0 0 0 1px #093F6C;
@@ -104,6 +96,16 @@
 
 .buttons:active {
   background-color: #093F6C;
+}
+
+.youTubeIcon {
+  height: 7vh;
+  margin-right: 0.5vw;
+}
+
+.tikTokIcon {
+  height: 5vh;
+  margin-right: 0.5vw;
 }
 
 .swal2-container.swal2-backdrop-show {
@@ -159,6 +161,14 @@
     font-size: 12px;
   }
 
+  .youTubeIcon {
+    height: 7.2vh;
+  }
+
+  .tikTokIcon {
+    height: 5.2vh;
+  }
+
   .swal2-html-container {
     font-size: 16px !important;
   }
@@ -179,6 +189,14 @@
 
   .buttons {
     font-size: 11.5px;
+  }
+
+  .youTubeIcon {
+    height: 7.4vh;
+  }
+
+  .tikTokIcon {
+    height: 5.4vh;
   }
 
   .swal2-popup {

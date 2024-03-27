@@ -1,9 +1,11 @@
 import React from "react";
 import Header from "../../components/Header/Header";
+import YouTubeHD from "./YouTubeHD/YouTubeHD";
 import YouTube from "./YouTube/YouTube";
 import YouTubeMusic from "./YouTubeMusic/YouTubeMusic";
+import TikTokHD from "./TikTokHD/TikTokHD";
 import TikTok from "./TikTok/TikTok";
-import Footer from "../../components/Footer/Footer";
+import TikTokAudio from "./TikTokAudio/TikTokAudio";
 import "../../Styles.css";
 
 export default function Home() {
@@ -12,14 +14,16 @@ export default function Home() {
       <Header />
       <div className="body">
         <div className="bodyRow">
+          <YouTubeHD />
           <YouTube />
           <YouTubeMusic />
         </div>
         <div className="bodyRow">
+          <TikTokHD />
           <TikTok />
+          <TikTokAudio />
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

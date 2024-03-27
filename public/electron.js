@@ -80,10 +80,10 @@ process.on("uncaughtException", (error) => {
   };
 });
 
-ipcMain.on("URLYoutube", async (event, message) => {
+ipcMain.on("URLYoutubeHD", async (event, message) => {
   try {
     ytdl.getInfo(message).then((data) => {
-      event.sender.send("URLYoutubeResponse", "Downloading...");
+      event.sender.send("URLYoutubeHDResponse", "Downloading...");
 
       const format = ytdl.chooseFormat(data.formats, { quality: "highestvideo" });
       const outputFilePath = `${data.videoDetails.title}`;
@@ -119,13 +119,13 @@ ipcMain.on("URLYoutube", async (event, message) => {
             .save(path.join(appPath, `${outputFilePathConverted}.mp4`))
             .on("error", (error) => {
               console.error("Error merging audio and video:", error);
-              event.sender.send("URLYoutubeResponse", error);
+              event.sender.send("URLYoutubeHDResponse", error);
             })
             .on("end", () => {
               fs.unlinkSync(videoFileName);
               fs.unlinkSync(audioFileName);
               console.log(`Finished downloading and merging: ${outputFilePathConverted}`);
-              event.sender.send("URLYoutubeResponse", "Download finished");
+              event.sender.send("URLYoutubeHDResponse", "Download finished");
             });
         };
       });
@@ -141,29 +141,56 @@ ipcMain.on("URLYoutube", async (event, message) => {
             .save(path.join(appPath, `${outputFilePathConverted}.mp4`))
             .on("error", (error) => {
               console.error("Error merging audio and video:", error);
-              event.sender.send("URLYoutubeResponse", error);
+              event.sender.send("URLYoutubeHDResponse", error);
             })
             .on("end", () => {
               fs.unlinkSync(videoFileName);
               fs.unlinkSync(audioFileName);
               console.log(`Finished downloading and merging: ${outputFilePathConverted}`);
-              event.sender.send("URLYoutubeResponse", "Download finished");
+              event.sender.send("URLYoutubeHDResponse", "Download finished");
             });
         };
       });
     }).catch((error) => {
       console.error(error);
-      event.sender.send("URLYoutubeResponse", "This YouTube link is incorrect");
+      event.sender.send("URLYoutubeHDResponse", "This YouTube link is incorrect");
     });
   } catch (error) {
     console.log(error);
   };
 });
 
-ipcMain.on("URLMusicYoutube", async (event, message) => {
+ipcMain.on("URLYoutube", async (event, message) => {
   try {
     ytdl.getInfo(message).then((data) => {
-      event.sender.send("URLMusicYoutubeResponse", "Downloading...");
+      event.sender.send("URLYoutubeResponse", "Downloading...");
+
+      const format = ytdl.chooseFormat(data.formats, { quality: "18" });
+      const outputFilePath = `${data.videoDetails.title}.mp4`;
+      const outputFilePathConverted = outputFilePath.replace(/\?/g, "");
+      const appPath = path.join(os.homedir(), "Downloads");
+      const fileName = path.join(appPath, outputFilePathConverted);
+      const outputStream = fs.createWriteStream(fileName);
+
+      ytdl.downloadFromInfo(data, { format: format }).pipe(outputStream);
+
+      outputStream.on("finish", () => {
+        console.log(`Finished downloading: ${outputFilePath}`);
+        event.sender.send("URLYoutubeResponse", "Download finished");
+      });
+    }).catch((error) => {
+      console.error(error);
+      event.sender.send("URLYoutubeHDResponse", "This YouTube link is incorrect");
+    });
+  } catch (error) {
+    console.log(error);
+  };
+});
+
+ipcMain.on("URLYoutubeMusic", async (event, message) => {
+  try {
+    ytdl.getInfo(message).then((data) => {
+      event.sender.send("URLYoutubeMusicResponse", "Downloading...");
 
       const format = ytdl.chooseFormat(data.formats, {
         quality: "highestaudio",
@@ -185,18 +212,52 @@ ipcMain.on("URLMusicYoutube", async (event, message) => {
           .toFormat("mp3")
           .on("error", (error) => {
             console.error("Error converting:", error);
-            event.sender.send("URLMusicYoutubeResponse", error);
+            event.sender.send("URLYoutubeMusicResponse", error);
           })
           .on("end", () => {
             fs.unlinkSync(fileName);
             console.log(`Finished downloading and converting: ${outputFilePath}`);
-            event.sender.send("URLMusicYoutubeResponse", "Download finished");
+            event.sender.send("URLYoutubeMusicResponse", "Download finished");
           })
           .save(`${fileName}.mp3`);
       });
     }).catch((error) => {
       console.error(error);
-      event.sender.send("URLMusicYoutubeResponse", "This YouTube link is incorrect");
+      event.sender.send("URLYoutubeMusicResponse", "This YouTube link is incorrect");
+    });
+  } catch (error) {
+    console.log(error);
+  };
+});
+
+ipcMain.on("URLTikTokHD", async (event, message) => {
+  try {
+    event.sender.send("URLTikTokHDResponse", "Downloading...");
+
+    TiktokDownloader(message, {
+      version: "v3"
+    }).then((data) => {
+      const url = data.result.video_hd;
+      const nickname = data.result.author.nickname;
+      const appPath = path.join(os.homedir(), "Downloads");
+      const dateNow = new Date(Date.now());
+      const dateID = dateNow.getTime();
+      const fileName = path.join(appPath, `${nickname}_${dateID}.mp4`);
+      const fileStream = fs.createWriteStream(fileName);
+
+      fileStream.on("finish", () => {
+        console.log("Download finished");
+        event.sender.send("URLTikTokHDResponse", "Download finished");
+      });
+
+      try {
+        https.get(url, res => res.pipe(fileStream));
+      } catch (error) {
+        console.log(error);
+      };
+    }).catch((error) => {
+      console.error(error);
+      event.sender.send("URLTikTokHDResponse", "This TikTok link is incorrect");
     });
   } catch (error) {
     console.log(error);
@@ -210,7 +271,7 @@ ipcMain.on("URLTikTok", async (event, message) => {
     TiktokDownloader(message, {
       version: "v3"
     }).then((data) => {
-      const url = data.result.video_hd;
+      const url = data.result.video1;
       const nickname = data.result.author.nickname;
       const appPath = path.join(os.homedir(), "Downloads");
       const dateNow = new Date(Date.now());
@@ -231,6 +292,40 @@ ipcMain.on("URLTikTok", async (event, message) => {
     }).catch((error) => {
       console.error(error);
       event.sender.send("URLTikTokResponse", "This TikTok link is incorrect");
+    });
+  } catch (error) {
+    console.log(error);
+  };
+});
+
+ipcMain.on("URLTikTokAudio", async (event, message) => {
+  try {
+    event.sender.send("URLTikTokAudioResponse", "Downloading...");
+
+    TiktokDownloader(message, {
+      version: "v3"
+    }).then((data) => {
+      const url = data.result.music;
+      const nickname = data.result.author.nickname;
+      const appPath = path.join(os.homedir(), "Downloads");
+      const dateNow = new Date(Date.now());
+      const dateID = dateNow.getTime();
+      const fileName = path.join(appPath, `${nickname}_${dateID}.mp3`);
+      const fileStream = fs.createWriteStream(fileName);
+
+      fileStream.on("finish", () => {
+        console.log("Download finished");
+        event.sender.send("URLTikTokAudioResponse", "Download finished");
+      });
+
+      try {
+        https.get(url, res => res.pipe(fileStream));
+      } catch (error) {
+        console.log(error);
+      };
+    }).catch((error) => {
+      console.error(error);
+      event.sender.send("URLTikTokAudioResponse", "This TikTok link is incorrect");
     });
   } catch (error) {
     console.log(error);

@@ -3,14 +3,20 @@ import { createContext, useContext, useState } from "react";
 export const Context = createContext();
 
 export const ContextProvider = ({ children }) => {
+  const [inputURLYoutubeHD, setInputURLYoutubeHD] = useState("");
   const [inputURLYoutube, setInputURLYoutube] = useState("");
   const [inputURLYoutubeMusic, setInputURLYoutubeMusic] = useState("");
+  const [inputURLTikTokHD, setInputURLTikTokHD] = useState("");
   const [inputURLTikTok, setInputURLTikTok] = useState("");
+  const [inputURLTikTokAudio, setInputURLTikTokAudio] = useState("");
 
   const values = {
+    inputURLYoutubeHD, setInputURLYoutubeHD,
     inputURLYoutube, setInputURLYoutube,
     inputURLYoutubeMusic, setInputURLYoutubeMusic,
-    inputURLTikTok, setInputURLTikTok
+    inputURLTikTokHD, setInputURLTikTokHD,
+    inputURLTikTok, setInputURLTikTok,
+    inputURLTikTokAudio, setInputURLTikTokAudio
   };
 
   return (

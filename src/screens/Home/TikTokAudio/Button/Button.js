@@ -5,20 +5,28 @@ import "../../../../Styles.css";
 
 export default function Button() {
 
-  const { inputURLYoutubeMusic } = useContextAPI();
+  const { inputURLTikTokAudio } = useContextAPI();
 
-  const sendURLYoutubeMusic = () => {
-    window.api?.getURLYoutubeMusic(inputURLYoutubeMusic);
+  const sendURLTikTokAudio = () => {
+    if (inputURLTikTokAudio !== "") {
+      window.api?.getURLTikTokAudio(inputURLTikTokAudio);
+    } else {
+      Swal.fire({
+        icon: "error",
+        iconColor: "#E86969",
+        text: "This TikTok link is incorrect"
+      });
+    };
   };
 
-  window.api?.getURLYoutubeMusicResponse(data => {
+  window.api?.getURLTikTokAudioResponse(data => {
     if (data === "Downloading...") {
       Swal.fire({
         icon: "",
         showConfirmButton: false,
         text: data
       });
-    } else if (data === "This YouTube link is incorrect") {
+    } else if (data === "This TikTok link is incorrect") {
       Swal.fire({
         icon: "error",
         iconColor: "#E86969",
@@ -30,22 +38,16 @@ export default function Button() {
         iconColor: "#10B597",
         text: data
       });
-    } else {
-      Swal.fire({
-        icon: "error",
-        iconColor: "#E86969",
-        text: data
-      });
     };
   });
 
   return (
     <div className="buttonsContainer">
       <button
+        className="buttons"
         onClick={() => {
-          sendURLYoutubeMusic();
-        }}
-        className="buttons">
+          sendURLTikTokAudio();
+        }}>
         Download
       </button>
     </div>

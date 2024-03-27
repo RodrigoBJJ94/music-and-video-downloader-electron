@@ -5,7 +5,7 @@ import Input from "./Input/Input";
 import Button from "./Button/Button";
 import "../../../Styles.css";
 
-export default function TikTok() {
+export default function TikTokAudio() {
   return (
     <div className="bodyContainer">
       <div

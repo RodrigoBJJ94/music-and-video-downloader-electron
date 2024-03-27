@@ -5,13 +5,13 @@ import "../../../../Styles.css";
 
 export default function Button() {
 
-  const { inputURLYoutubeMusic } = useContextAPI();
+  const { inputURLYoutubeHD } = useContextAPI();
 
-  const sendURLYoutubeMusic = () => {
-    window.api?.getURLYoutubeMusic(inputURLYoutubeMusic);
+  const sendURLYoutubeHD = () => {
+    window.api?.getURLYoutubeHD(inputURLYoutubeHD);
   };
 
-  window.api?.getURLYoutubeMusicResponse(data => {
+  window.api?.getURLYoutubeHDResponse(data => {
     if (data === "Downloading...") {
       Swal.fire({
         icon: "",
@@ -43,9 +43,10 @@ export default function Button() {
     <div className="buttonsContainer">
       <button
         onClick={() => {
-          sendURLYoutubeMusic();
+          sendURLYoutubeHD();
         }}
-        className="buttons">
+        className="buttons"
+        style={{ marginRight: "1.5vw" }}>
         Download
       </button>
     </div>

@@ -1,6 +1,6 @@
 import React from "react";
 import YouTubeIcon from "../../../../icons/YouTubeIcon.svg";
-import "./Styles.css";
+import "../../../../Styles.css";
 
 export default function Icon() {
   return (

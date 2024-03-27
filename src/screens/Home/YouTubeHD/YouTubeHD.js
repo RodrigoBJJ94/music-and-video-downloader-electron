@@ -5,11 +5,10 @@ import Input from "./Input/Input";
 import Button from "./Button/Button";
 import "../../../Styles.css";
 
-export default function TikTok() {
+export default function YouTubeHD() {
   return (
     <div className="bodyContainer">
-      <div
-        className="titleContainer">
+      <div className="titleContainer">
         <Icon />
         <Title />
       </div>

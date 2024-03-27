@@ -1,7 +1,27 @@
 .headerBottom {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   width: 100vw;
   height: 8.1vh;
   background-color: #13538A;
+}
+
+.headerText {
+  margin-right: 0.5vw;
+  font-size: 13px;
+  font-weight: 500;
+  color: #FFFFFF;
+}
+
+@media (max-width: 1400px) {
+  .headerText {
+    font-size: 12.6px;
+  }
+}
+
+@media (max-width: 1280px) {
+  .headerText {
+    font-size: 12.2px;
+  }
 }
