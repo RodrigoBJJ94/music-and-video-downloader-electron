@@ -5,7 +5,7 @@ export default function Top() {
   return (
     <div className="headerTop">
       <p className="headerTitle">
-        Music and Video Downloader 0.2.0
+        Music and Video Downloader 0.3.0
       </p>
     </div>
   );
